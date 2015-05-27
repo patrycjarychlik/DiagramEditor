@@ -60,18 +60,4 @@ $( document ).ready(function() {
 	  
 	  });
 	
-	
-	/*------- Delete element -----------*/
-	
-	var deleteSelectedObject = document.getElementById('delete-item');
-	deleteSelectedObject.onclick = function()
-	{
-	if(canvas.getActiveGroup()){
-	      canvas.getActiveGroup().forEachObject(function(o){ canvas.remove(o) });
-	      canvas.discardActiveGroup().renderAll();
-	    } else {
-	      canvas.remove(canvas.getActiveObject());
-	    }
-	};
-	
 });
