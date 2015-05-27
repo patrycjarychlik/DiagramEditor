@@ -20,41 +20,62 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-<script src="js/jquery.js"></script>
+<script src="js/libs/jquery.js"></script>
 <script src="fabric/fabric.js"></script>
-<script src="js/main.js"></script>
 <script src="js/scalableCanvas.js"></script>
+<script src="js/main.js"></script>
 <script src="js/resizing.js"></script>
 <script src="js/addElement.js"></script>
 <script src="js/lines.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/drawingLines.js"></script>
 </head>
 
 <body>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Diagram Editor</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Diagram Editor</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+	            <li id="start" class="active"><a href="#" style="font-size:25px;">↖</a></li>
+	            <li id="Hsquare"><a href="#">square</a></li>
+	            <li id="Hcircle"><a href="#">circle</a></li>
+	            <li id="Hline"><a href="#">line</a></li>
+	             <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Przykładowe rozwijane <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+        	  </ul>
+             
+            <ul class="nav navbar-nav navbar-right">
+              <li id="delete-item" class="active"><a href="#">Delete</a></li>
+              <li id="add-rectangle"><a href="#">add Rectangle</a></li>
+              <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
 
     <div class="container">
 	<div style="position:relative;  width: 30%;  margin: 0 auto;">
-      <div class="starter-template" style="position:absolute; z-index:200;  margin: 50% auto;">
+      <div id="welcome-screen" class="starter-template " style="position:absolute; z-index:200;  margin: 50% auto;">
         <h1>Diagram Editor</h1>
         <p class="lead">Best diagram editor in the web<br> Thanks to bootstrap</p>
       </div>
@@ -65,55 +86,11 @@
 <!-- 	<canvas id="canvas" width="1500" height="800" style="border:1px solid #000000;"> -->
 	<canvas id="canvas" style="border:1px solid #000000; position: absolute; left: 0px; top: 0px;">
 </canvas>
-<button id="delete-item">delete</button>
-<button id="add-rectangle">add rectangle</button>
 <!-------------------------------------------------------------->
 
-   <script src="js/bootstrap.min.js"></script>
+   <script src="js/libs/bootstrap.min.js"></script>
    <script>
-		(function() {
-			var 
-				// Obtain a reference to the canvas element
-				// using its id.
-				htmlCanvas = document.getElementById('canvas'),
-			
-			  	// Obtain a graphics context on the
-			  	// canvas element for drawing.
-			  	context = htmlCanvas.getContext('2d');
- 
-			// Start listening to resize events and
-			// draw canvas.
-			initialize();
- 
-			function initialize() {
-				// Register an event listener to
-				// call the resizeCanvas() function each time 
-				// the window is resized.
-				window.addEventListener('resize', resizeCanvas, false);
-				
-				// Draw canvas border for the first time.
-				resizeCanvas();
-			}
-				
-			// Display custom canvas.
-			// In this case it's a blue, 5 pixel border that 
-			// resizes along with the browser window.					
-			function redraw() {
-				context.strokeStyle = 'black';
-				context.lineWidth = '1';
-				context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-			}
-		
-			// Runs each time the DOM window resize event fires.
-			// Resets the canvas dimensions to match window,
-			// then draws the new borders accordingly.
-			function resizeCanvas() {
-				htmlCanvas.width = window.innerWidth;
-				htmlCanvas.height = window.innerHeight;
-				redraw();
-			}
-		
-		})();
+	
 	</script>
 </body>
 </html>

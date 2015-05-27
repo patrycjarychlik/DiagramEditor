@@ -1,3 +1,7 @@
+/*
+ * sprawia że ramki obiektów się nie rozciągają tylko pozostają grubości zadanej
+ */
+
 $( document ).ready(function() {
 	var canvas = document.getElementById("canvas").fabric;
 	
@@ -58,9 +62,16 @@ $( document ).ready(function() {
 	
 	
 	/*------- Delete element -----------*/
+	
 	var deleteSelectedObject = document.getElementById('delete-item');
-	deleteSelectedObject.onclick = function()	{
+	deleteSelectedObject.onclick = function()
+	{
+	if(canvas.getActiveGroup()){
+	      canvas.getActiveGroup().forEachObject(function(o){ canvas.remove(o) });
+	      canvas.discardActiveGroup().renderAll();
+	    } else {
 	      canvas.remove(canvas.getActiveObject());
+	    }
 	};
 	
 });
