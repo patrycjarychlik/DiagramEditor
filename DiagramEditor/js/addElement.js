@@ -86,7 +86,9 @@ $( document ).ready(function() {
 		    return new fabric.Line(coords, {
 		      stroke: 'black',
 		      strokeWidth: 3,
-		      selectable: true
+		      selectable: true,
+		      hasControls: false,
+		      hasBorders: false
 		    });
 		  }
 
@@ -100,6 +102,59 @@ $( document ).ready(function() {
 		  );
 	}
 
+
+	function newArrow(x,y){
+			
+		  function makeCircle(left, top, line1, line2) {
+		    var c = new fabric.Circle({
+		    	left : left,
+				top : top,
+				fill : 'white',
+				strokeWidth: 2,
+				stroke: 'black',
+				radius: 3,
+		    });
+		    c.line1 = line1;
+		    c.line2 = line2;
+		    c.hasControls = c.hasBorders = false;
+		    return c;
+		  }
+		  
+		  function makeTriangle(left, top, line1, line2) {
+		  var t = new fabric.Triangle({
+		      left: left,
+		      top: top,
+		      opacity: 1,
+		      width: 20,
+		      height: 20,
+		      fill: '#000'
+		  });
+		  	t.line1 = line1;
+		    t.line2 = line2;
+		    t.lockScalingX=t.lockScalingY = true
+		    return t;
+		  }
+
+		  function makeLine(coords) {
+		    return new fabric.Line(coords, {
+		      stroke: 'black',
+		      strokeWidth: 3,
+		      selectable: true,
+		      hasControls: false,
+		      hasBorders: false
+		    });
+		  }
+
+		  var line = makeLine([ x-150, y-50, x+150, y-50 ]);
+
+		  canvas.add(line);
+
+		  canvas.add(
+		    makeCircle(line.get('x1'), line.get('y1'), null, line),
+		    makeTriangle(line.get('x2'), line.get('y2'), line)
+		  );
+	}
+	
 	function createLine(x,y) {
 		var points=[x,y,x+300,y];
 		return new fabric.Line(points,{
@@ -141,6 +196,9 @@ $( document ).ready(function() {
 			    case "Hline":
 			       newLine(options.e.clientX, options.e.clientY);
 			        break;
+			    case "Harrow":
+			    	newArrow(options.e.clientX, options.e.clientY);
+			    	break;
 			    default:
 			    	;// do nothing
 		 	} 
