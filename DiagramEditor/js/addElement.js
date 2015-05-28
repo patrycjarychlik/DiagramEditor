@@ -4,6 +4,8 @@
 
 $( document ).ready(function() {
 	var canvas = document.getElementById("canvas").fabric;
+	
+	fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
 
 /*------- OBJECTS -----------*/
@@ -21,23 +23,38 @@ $( document ).ready(function() {
 		});
 	}
 	
-	function createRectangle(x,y) {
-			return new fabric.Rect({
-				left : x-50,
-				top : y-100,
+	function newRectangle(x,y) {
+		
+		 function makeRectangle(text){
+			var rect = new fabric.Rect({
+				left : x,
+				top : y-50,
 				fill : 'white',
 				strokeWidth: 2,
 				stroke: 'black',
 				width : 100,
 				height : 100
 			});
-		
+			rect.text=text;
+			return rect;
+		 }
+			var text = new fabric.IText('Tap and Type', { 
+				  fontFamily: 'arial',
+				  fontSize: 13,
+				  left: x, 
+				  top: y-50 ,
+				});
+			
+		canvas.add(text);
+		canvas.add(makeRectangle(text));
+		canvas.bringToFront(text);
 		}
 	
-	function createCircle(x,y) {
-			return new fabric.Circle({
-				left : x-20,
-				top : y-70,
+	
+	function newCircle(x,y) {
+		var circle = new fabric.Circle({
+				left : x,
+				top : y-50,
 				fill : 'white',
 				strokeWidth: 2,
 				stroke: 'black',
@@ -45,8 +62,44 @@ $( document ).ready(function() {
 				height : 100,
 				radius: 20
 			});
+			canvas.add(circle);
 		}
 	
+	function newLine(x,y){
+			
+		  function makeCircle(left, top, line1, line2) {
+		    var c = new fabric.Circle({
+		    	left : left,
+				top : top,
+				fill : 'white',
+				strokeWidth: 2,
+				stroke: 'black',
+				radius: 3,
+		    });
+		    c.line1 = line1;
+		    c.line2 = line2;
+		    c.hasControls = c.hasBorders = false;
+		    return c;
+		  }
+
+		  function makeLine(coords) {
+		    return new fabric.Line(coords, {
+		      stroke: 'black',
+		      strokeWidth: 3,
+		      selectable: true
+		    });
+		  }
+
+		  var line = makeLine([ x-150, y-50, x+150, y-50 ]);
+
+		  canvas.add(line);
+
+		  canvas.add(
+		    makeCircle(line.get('x1'), line.get('y1'), null, line),
+		    makeCircle(line.get('x2'), line.get('y2'), line)
+		  );
+	}
+
 	function createLine(x,y) {
 		var points=[x,y,x+300,y];
 		return new fabric.Line(points,{
@@ -80,14 +133,14 @@ $( document ).ready(function() {
 		   for (var i = 0; i < elem.length; i++) {
 		 	switch(elem[i].id) {
 			    case "Hsquare":
-			    	 canvas.add(createRectangle(options.e.clientX, options.e.clientY));
+			    	newRectangle(options.e.clientX, options.e.clientY);
 			        break;
 			    case "Hcircle":
-			        canvas.add(createCircle(options.e.clientX, options.e.clientY));
+			       newCircle(options.e.clientX, options.e.clientY);
 			        break;
-//			    case "Hline":
-//			        canvas.add(createLine(options.e.clientX, options.e.clientY));
-//			        break;
+			    case "Hline":
+			       newLine(options.e.clientX, options.e.clientY);
+			        break;
 			    default:
 			    	;// do nothing
 		 	} 
@@ -95,7 +148,17 @@ $( document ).ready(function() {
 		
 		});
 	
-
-
+	canvas.on('object:moving', function(e) {
+	    var p = e.target;
+	    p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
+	    p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+	    canvas.renderAll();
+	  });	
+	
+	canvas.on('object:moving', function(e) {
+	    var p = e.target;
+	    p.text && p.text.set({ 'left': p.left, 'top': p.top });
+	    canvas.renderAll();
+	  });	
 	
 });
