@@ -6,7 +6,6 @@ $( document ).ready(function() {
 
 	var canvas = new fabric.Canvas('canvas');
 	document.getElementById("canvas").fabric = canvas;
-	
 	/*------- BACKGROUND -----------*/
 	var src = 'img/bg.png';
 	canvas.setBackgroundColor({source: src, repeat: 'repeat'}, function () {

@@ -90,7 +90,16 @@ function deleteElements(){
 	}
 }
 
-/* delete elements with menu button */
-	$('#delete-item').click(deleteElements);
+function download() {
+	var dataUrl = canvas.toDataURL('image/jpeg');
+	this.href = dataUrl;
+};
+downloadLnk.addEventListener('click', download, false);
 
+
+/* delete elements with menu button */
+	//$('#delete-item').click(deleteElements);
+
+	/* export to image */
+	$('#delete-item').click(exportToImage);
 });
