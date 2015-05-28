@@ -78,6 +78,7 @@ $( document ).ready(function() {
 		    });
 		    c.line1 = line1;
 		    c.line2 = line2;
+		    c.type = 'dot';
 		    c.hasControls = c.hasBorders = false;
 		    return c;
 		  }
@@ -116,6 +117,7 @@ $( document ).ready(function() {
 		    });
 		    c.line1 = line1;
 		    c.line2 = line2;
+		    c.type = 'dot';
 		    c.hasControls = c.hasBorders = false;
 		    return c;
 		  }
@@ -127,11 +129,13 @@ $( document ).ready(function() {
 		      opacity: 1,
 		      width: 20,
 		      height: 20,
+		      angle: 90,
 		      fill: '#000'
 		  });
 		  	t.line1 = line1;
 		    t.line2 = line2;
-		    t.lockScalingX=t.lockScalingY = true
+		    t.type = 'triangle';
+		    t.hasControls = t.hasBorders = false;
 		    return t;
 		  }
 
@@ -210,6 +214,45 @@ $( document ).ready(function() {
 	    var p = e.target;
 	    p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
 	    p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+	    if(p.type=='triangle'){
+	    	      var x = p.line1.get('x2') - p.line1.get('x1');
+	    	      var y = p.line1.get('y2') - p.line1.get('y1');
+	    	var angle;
+	    	if (x == 0) {
+	    	  if (y == 0) {
+	    	    angle = 0;
+	    	  }
+	    	  else if (y > 0) {
+	    	    angle = Math.PI / 2;
+	    	  }
+	    	  else {
+	    	    angle = Mathi.PI * 3 / 2;
+	    	  }
+	    	}
+	    	else if (y == 0) {
+	    	  if (x > 0) {
+	    	    angle = 0;
+	    	  }
+	    	  else {
+	    	    angle = Math.PI;
+	    	  }
+	    	}
+	    	else {
+	    	  if (x < 0) {
+	    	    angle = Math.atan(y / x) + Math.PI;
+	    	  }
+	    	  else if ( y < 0) {
+	    	    angle = Math.atan(y / x) + (2 * Math.PI);
+	    	  }
+	    	  else {
+	    	    angle = Math.atan(y / x);
+	    	  }
+	    	}
+	    	angle = angle * 180 / Math.PI;
+	    	               // var angle = -Math.atan((y)/(x))*180/Math.PI
+
+	    	      p.set('angle',angle-270);
+	    }
 	    canvas.renderAll();
 	  });	
 	
