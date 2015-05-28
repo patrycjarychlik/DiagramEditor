@@ -10,19 +10,6 @@ $( document ).ready(function() {
 
 /*------- OBJECTS -----------*/
 
-	function createRectangleInTheMiddle() {
-	// create a rectangle object
-		return new fabric.Rect({
-			left : 500,
-			top : 300,
-			fill : 'white',
-			strokeWidth: 2,
-			stroke: 'black',
-			width : 100,
-			height : 100
-		});
-	}
-	
 	function newRectangle(x,y) {
 		
 		 function makeRectangle(text){
@@ -42,7 +29,9 @@ $( document ).ready(function() {
 				  fontFamily: 'arial',
 				  fontSize: 13,
 				  left: x, 
-				  top: y-50 ,
+				  top: y-50,
+				  hasControls: false,
+				  hasBorders:false
 				});
 			
 		canvas.add(text);
@@ -63,6 +52,19 @@ $( document ).ready(function() {
 				radius: 20
 			});
 			canvas.add(circle);
+		}
+	
+	function newEllipse(x,y) {
+		var ellipse = new fabric.Ellipse({
+				left : x,
+				top : y-50,
+				 rx: 115,
+				 ry: 70,
+				strokeWidth: 2,
+				stroke: 'black',
+				fill : 'white'
+			});
+			canvas.add(ellipse);
 		}
 	
 	function newLine(x,y){
@@ -197,6 +199,9 @@ $( document ).ready(function() {
 			    case "Hcircle":
 			       newCircle(options.e.clientX, options.e.clientY);
 			        break;
+			    case "Hellipse":
+			    	newEllipse(options.e.clientX, options.e.clientY);
+			    	break;
 			    case "Hline":
 			       newLine(options.e.clientX, options.e.clientY);
 			        break;
