@@ -31,7 +31,8 @@ $( document ).ready(function() {
 				  left: x, 
 				  top: y-50,
 				  hasControls: false,
-				  hasBorders:false
+				  hasBorders:false,
+				     selectable: true
 				});
 			
 		canvas.add(text);
@@ -41,7 +42,8 @@ $( document ).ready(function() {
 	
 	
 	function newCircle(x,y) {
-		var circle = new fabric.Circle({
+		function makeCircle(text){
+			var circle = new fabric.Circle({
 				left : x,
 				top : y-50,
 				fill : 'white',
@@ -49,13 +51,30 @@ $( document ).ready(function() {
 				stroke: 'black',
 				width : 100,
 				height : 100,
-				radius: 20
+				radius: 50
 			});
-			canvas.add(circle);
+			circle.text=text;
+			return circle;
+		 }
+		
+		var text = new fabric.IText('Tap and Type', { 
+			  fontFamily: 'arial',
+			  fontSize: 13,
+			  left: x, 
+			  top: y-50,
+			  hasControls: false,
+			  hasBorders:false,
+			     selectable: true
+			});
+		
+			canvas.add(text);
+			canvas.add(makeCircle(text));
+			canvas.bringToFront(text);
 		}
 	
 	function newEllipse(x,y) {
-		var ellipse = new fabric.Ellipse({
+		function makeEllipse(text){
+			var ellipse = new fabric.Ellipse({
 				left : x,
 				top : y-50,
 				 rx: 115,
@@ -64,7 +83,23 @@ $( document ).ready(function() {
 				stroke: 'black',
 				fill : 'white'
 			});
-			canvas.add(ellipse);
+			ellipse.text=text;
+			return ellipse;
+		}
+			
+		var text = new fabric.IText('Tap and Type', { 
+			  fontFamily: 'arial',
+			  fontSize: 13,
+			  left: x, 
+			  top: y-50,
+			  hasControls: false,
+			  hasBorders:false,
+		     selectable: true
+		});
+		
+		canvas.add(text);
+		canvas.add(makeEllipse(text));
+		canvas.bringToFront(text);
 		}
 	
 	function newLine(x,y){
@@ -266,5 +301,46 @@ $( document ).ready(function() {
 	    p.text && p.text.set({ 'left': p.left, 'top': p.top });
 	    canvas.renderAll();
 	  });	
+	
+	//handle moving object
+	canvas.on('object:moving', function(event) {
+	            var obj = event.target;
+	            intersectingCheck(obj);
+	});
+
+	function intersectingCheck(activeObject) {
+	    activeObject.setCoords();
+	    if(typeof activeObject.refreshLast != 'boolean') {
+	        activeObject.refreshLast = true
+	    };
+
+	    //loop canvas objects
+	    activeObject.canvas.forEachObject(function (targ) {
+	        if (targ === activeObject) return; //bypass self
+
+	        //check intersections with every object in canvas
+	        if (activeObject.intersectsWithObject(targ) 
+	            || activeObject.isContainedWithinObject(targ) 
+	            || targ.isContainedWithinObject(activeObject)) {
+	                //objects are intersecting - deny saving last non-intersection position and break loop
+	                if(typeof activeObject.lastLeft == 'number') {
+	                    activeObject.left = activeObject.lastLeft;
+	                    activeObject.top = activeObject.lastTop;
+	                    activeObject.text && activeObject.text.set({ 'left': activeObject.lastLeft, 'top': activeObject.lastTop });
+	                    activeObject.refreshLast = false;
+	                    return;
+	                }
+	           }
+	           else {
+	               activeObject.refreshLast = true;
+	           }
+	   });
+
+	   if(activeObject.refreshLast) {
+	       //save last non-intersecting position if possible
+	       activeObject.lastLeft = activeObject.left
+	       activeObject.lastTop = activeObject.top;
+	   }
+	}
 	
 });
