@@ -96,7 +96,6 @@ function download() {
 };
 downloadLnk.addEventListener('click', download, false);
 
-
 	/* delete elements with menu button */
 	$('#delete-item').click(deleteElements);
 });
